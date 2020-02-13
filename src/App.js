@@ -12,19 +12,29 @@ const getMinMax = (data,value) =>{
 }
 
 function App() {
-  const data = [
-    {x:2008,y:83},
-    {x:2009,y:290},
-    {x:2010,y:245},
-    {x:2011,y:920},
-    {x:2012,y:90},
-    {x:2013,y:600},
-    {x:2014,y:140},
-    {x:2015,y:220},
+  let data = [
+    {cost:83,mode:2008},
+    {cost:290,mode:2009},
+    {cost:245,mode:2010},
+    {cost:920,mode:2011},
+    {cost:90,mode:2012},
+    {cost:600,mode:2013},
+    {cost:140,mode:2014},
+    {cost:220,mode:2015},
   ]
 
+  const getRandomNumber = n =>{
+    // Math.random() * (max - min) + min;
+    return Math.floor(Math.random() * 1000);
+  }
+  data = data.map(rec =>{
+    rec.y = getRandomNumber()
+    return rec
+  })
+
+
   let minmax = getMinMax(data,"y")
-  let totalHeight = 500
+  let totalHeight = 450
   let totalWidth = 800
   let bottomMargin = 50
   let leftMargin = 100
@@ -33,12 +43,12 @@ function App() {
   return (
     <div className="chart-container" >
       <svg className="graph" aria-labelledby="title" role="img">
-        <title id="title">A line chart showing some information</title>
         <g className="grid y-grid" id="yGrid">
-          <line x1={leftMargin} x2={leftMargin} y1={0} y2={totalHeight - bottomMargin}></line>
+          <line stroke="#000" x1={leftMargin} x2={leftMargin} y1={0} y2={totalHeight - bottomMargin}></line>
         </g>
         <g className="grid x-grid" id="xGrid">
           <line 
+            stroke="#000"
             x1={leftMargin} 
             x2={totalWidth} 
             y1={totalHeight - bottomMargin}  
@@ -51,7 +61,7 @@ function App() {
           <text x="10" y="200" className="label-title">Price</text>
         </g>
         <Series bottomMargin={bottomMargin} barWidth={barWidth} totalHeight={totalHeight} data={data}
-          totalWidth={totalWidth} leftMargin={leftMargin} />
+          totalWidth={totalWidth} leftMargin={leftMargin} minmax={minmax} />
       </svg>
     </div >
   );

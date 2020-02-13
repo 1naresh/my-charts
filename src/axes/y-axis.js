@@ -1,28 +1,30 @@
 
 import React from 'react';
+import { getRangeMax } from '../utils/axis-range'
 
-const getRangeMax = (val,d)=>{
-    if(Math.floor(val/10) === 0 ){
-        return (val+1) * d
-    }else{
-        d = d * 10
-        return getRangeMax(Math.floor(val/10),d)
-    }
+const getInterval = (max,points) =>{
+    return getRangeMax(max)/points
 }
 
-const getRange = (max,points) =>{
-    return (getRangeMax(max)-0)/points 
+const getPointPosition = (max,i,yAxisHeight) =>{
+    let interval = getInterval(max,10)
+    return (interval *  i ) * yAxisHeight / getRangeMax(max )
+}
+
+const getDisplayText = (max,i) =>{
+    let interval = getInterval(max,10)
+    return interval *  i
 }
 
 const YAxis = props => {
-    let { minmax,totalHeight,bottomMargin,leftMargin } = props
+    let { minmax,totalHeight,totalWidth,bottomMargin,leftMargin } = props
     let yAxisHeight = totalHeight 
     let yaxisPoints = []
-    for (let i = 0; i < 10; i++) {
+    for (let i = 1; i < 11; i++) {
         yaxisPoints.push({ 
             x: leftMargin, 
-            y: Math.floor(i * minmax.max / 10 * yAxisHeight / minmax.max), 
-            value: Math.floor(i * minmax.max / 6 * yAxisHeight / minmax.max),
+            y: getPointPosition(minmax.max,i,yAxisHeight - bottomMargin ) , 
+            value: getDisplayText(minmax.max,i) ,
         })
     }
     return (
@@ -31,18 +33,20 @@ const YAxis = props => {
                 {yaxisPoints.map((point,i) => {
                     let { x, y, value } = point
                     return (
-                        <text key={i} x={x-20} y={yAxisHeight - y - bottomMargin}>{value}</text>
+                        <text key={i} x={x-20} y={yAxisHeight - y - bottomMargin  + 15}>{value}</text>
                     )
                 })}
             </g>
             <g className="grid y-labels">
                 {yaxisPoints.map((point,i) => {
                     let { x, y } = point
+                    
                     return (
                         <line
                             key={i}
-                            x1={x-10}
-                            x2={x}
+                            x1={x}
+                            stroke ={"#dbdbdb"} 
+                            x2={totalWidth}
                             y1={yAxisHeight - y - bottomMargin}
                             y2={yAxisHeight - y - bottomMargin}>
                         </line>
