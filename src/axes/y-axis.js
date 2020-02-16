@@ -33,22 +33,21 @@ const YAxis = props => {
                 {yaxisPoints.map((point,i) => {
                     let { x, y, value } = point
                     return (
-                        <text key={i} x={x-20} y={yAxisHeight - y - bottomMargin  + 15}>{value}</text>
+                        <text key={i} x={x-20} y={yAxisHeight - y + 15}>{value}</text>
                     )
                 })}
             </g>
             <g className="grid y-labels">
                 {yaxisPoints.map((point,i) => {
                     let { x, y } = point
-                    
                     return (
                         <line
                             key={i}
                             x1={x}
                             stroke ={"#dbdbdb"} 
                             x2={totalWidth}
-                            y1={yAxisHeight - y - bottomMargin}
-                            y2={yAxisHeight - y - bottomMargin}>
+                            y1={yAxisHeight - y + 10 }
+                            y2={yAxisHeight - y + 10 }>
                         </line>
                     )
                 })}
