@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import YAxis from './axes/y-axis';
 import XAxis from './axes/x-axis';
 import Series from './bar-series/series';
 import {getCube,resData} from './utils/cube';
 import './App.css';
+import Dropdown from './viz-list';
 
 const getMinMax = (data,value) =>{
   let values = data.map(row=>row[value])
@@ -46,7 +47,9 @@ let columns = [
 
 
 function App() {
+  const [activeViz,setActiveViz] = useState("text")
   return (
+    <div style={{position:"relative"}} >
     <div className="chart-container" >
       <svg className="graph" aria-labelledby="title" role="img">
         <g className="grid y-grid" id="yGrid">
@@ -69,6 +72,8 @@ function App() {
             seriesWidth={totalWidth - leftMargin} leftMargin={leftMargin} minmax={minmax} topMargin={topMargin} />
         </g>
       </svg>
+      <Dropdown setActiveViz={ vizType => setActiveViz(vizType)} activeViz={activeViz} />
+      </div>
     </div >
   );
 }
